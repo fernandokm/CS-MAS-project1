@@ -31,8 +31,10 @@ class Sheep(RandomWalker):
                     break
             if self.energy == 0:
                 self.model.kill(self)
+                return
 
         if self.random.random() < self.model.sheep_reproduce:
+            print(self.pos)
             self.model.add_sheep(*self.pos)
 
 

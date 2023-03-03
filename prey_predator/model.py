@@ -50,7 +50,7 @@ class WolfSheep(Model):
         sheep_reproduce=0.04,
         wolf_reproduce=0.05,
         wolf_gain_from_food=20,
-        grass=True,
+        grass=False,
         grass_regrowth_time=30,
         sheep_gain_from_food=4,
     ):
@@ -80,7 +80,6 @@ class WolfSheep(Model):
         self.grass = grass
         self.grass_regrowth_time = grass_regrowth_time
         self.sheep_gain_from_food = sheep_gain_from_food
-
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
         self.datacollector = DataCollector(
@@ -101,11 +100,15 @@ class WolfSheep(Model):
         # Create grass patches
         # ... to be completed
 
+    def kill(self, agent):
+        self.schedule.remove(agent)
+        self.grid.remove_agent(agent)
+        
+
     def add_sheep(self, x = None, y = None):
-        if x == None or y == None:
+        if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
-        print((x,y))
         new_sheep = Sheep(self.next_id(), self, True, self.sheep_gain_from_food)
         self.grid.place_agent(new_sheep, (x, y))
         self.schedule.add(new_sheep)
