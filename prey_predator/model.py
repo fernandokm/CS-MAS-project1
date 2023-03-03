@@ -50,7 +50,7 @@ class WolfSheep(Model):
         sheep_reproduce=0.04,
         wolf_reproduce=0.05,
         wolf_gain_from_food=20,
-        grass=False,
+        grass=True,
         grass_regrowth_time=30,
         sheep_gain_from_food=4,
     ):
@@ -105,9 +105,9 @@ class WolfSheep(Model):
         if x == None or y == None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
-
+        print((x,y))
         new_sheep = Sheep(self.next_id(), self, True, self.sheep_gain_from_food)
-        self.grid.place_agent(new_sheep)
+        self.grid.place_agent(new_sheep, (x, y))
         self.schedule.add(new_sheep)
 
     def add_wolf(self, x = None, y = None):
@@ -116,7 +116,7 @@ class WolfSheep(Model):
             y = self.random.randrange(self.grid.height)
 
         new_sheep = Wolf(self.next_id(), self, True, self.sheep_gain_from_food)
-        self.grid.place_agent(new_sheep)
+        self.grid.place_agent(new_sheep, (x, y))
         self.schedule.add(new_sheep)
 
     def step(self):

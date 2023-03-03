@@ -9,9 +9,9 @@ class Sheep(RandomWalker):
     The init is the same as the RandomWalker.
     """
 
-    energy = None
+    energy = 0
 
-    def __init__(self, unique_id, model, moore, energy=None):
+    def __init__(self, unique_id, model, moore, energy=0):
         super().__init__(unique_id, model, moore=moore)
         self.energy = energy
 
@@ -19,8 +19,21 @@ class Sheep(RandomWalker):
         """
         A model step. Move, then eat grass and reproduce.
         """
+
         self.random_move()
-        # ... to be completed
+
+        if self.model.grass:
+            self.energy -= 1
+            for agent in self.model.grid.get_cell_list_contents([self.pos]):
+                if isinstance(agent, GrassPatch) and agent.fully_grown:
+                    agent.fully_grown = False
+                    self.energy += self.model.sheep_gain_from_food
+                    break
+            if self.energy == 0:
+                self.model.kill(self)
+
+        if self.random.random() < self.model.sheep_reproduce:
+            self.model.add_sheep(*self.pos)
 
 
 class Wolf(RandomWalker):
@@ -56,4 +69,5 @@ class GrassPatch(Agent):
         # ... to be completed
 
     def step(self):
+        pass
         # ... to be completed
