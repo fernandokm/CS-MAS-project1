@@ -11,8 +11,8 @@ class Sheep(RandomWalker):
 
     energy = None
 
-    def __init__(self, unique_id, pos, model, moore, energy=None):
-        super().__init__(unique_id, pos, model, moore=moore)
+    def __init__(self, unique_id, model, moore, energy=None):
+        super().__init__(unique_id, model, moore=moore)
         self.energy = energy
 
     def step(self):
@@ -30,8 +30,8 @@ class Wolf(RandomWalker):
 
     energy = None
 
-    def __init__(self, unique_id, pos, model, moore, energy=None):
-        super().__init__(unique_id, pos, model, moore=moore)
+    def __init__(self, unique_id, model, moore, energy=None):
+        super().__init__(unique_id, model, moore=moore)
         self.energy = energy
 
     def step(self):
@@ -44,7 +44,7 @@ class GrassPatch(Agent):
     A patch of grass that grows at a fixed rate and it is eaten by sheep
     """
 
-    def __init__(self, unique_id, pos, model, fully_grown, countdown):
+    def __init__(self, unique_id, model, fully_grown, countdown):
         """
         Creates a new patch of grass
 
