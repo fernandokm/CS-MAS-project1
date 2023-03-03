@@ -23,7 +23,7 @@ def wolf_sheep_portrayal(agent):
             "Filled": "true",
             "Color": COLOR_SHEEP,
             "r": 0.3,
-            "Layer": 2
+            "Layer": 2,
         }
     elif type(agent) is Wolf:
         portrayal = {
@@ -31,7 +31,7 @@ def wolf_sheep_portrayal(agent):
             "Filled": "true",
             "Color": COLOR_WOLF,
             "r": 0.5,
-            "Layer": 1
+            "Layer": 1,
         }
 
     elif type(agent) is GrassPatch:
@@ -40,9 +40,9 @@ def wolf_sheep_portrayal(agent):
                 "Shape": "rect",
                 "Filled": "false",
                 "Color": COLOR_GRASS,
-                "w" : 0.9,
-                "h" : 0.9,
-                "Layer": 0
+                "w": 0.9,
+                "h": 0.9,
+                "Layer": 0,
             }
         else:
             p = 1 - agent.countdown / agent.model.grass_regrowth_time
@@ -50,9 +50,9 @@ def wolf_sheep_portrayal(agent):
                 "Shape": "rect",
                 "Filled": "false",
                 "Color": COLOR_GRASS,
-                "w" : 0.7 * p,
-                "h" : 0.7 * p,
-                "Layer": 0
+                "w": 0.7 * p,
+                "h": 0.7 * p,
+                "Layer": 0,
             }
 
     return portrayal
@@ -64,7 +64,38 @@ chart_element = ChartModule(
 )
 
 model_params = {
-    # ... to be completed
+    "grass": UserSettableParameter("checkbox", "Eat grass", value=True),
+    "initial_sheep": UserSettableParameter(
+        "slider", "Initial sheep", value=100, min_value=0, max_value=400, step=1
+    ),
+    "initial_wolves": UserSettableParameter(
+        "slider", "Initial wolves", value=50, min_value=0, max_value=400, step=1
+    ),
+    "sheep_reproduce": UserSettableParameter(
+        "slider",
+        "Sheep reproduction rate",
+        value=0.04,
+        min_value=0,
+        max_value=1,
+        step=0.01,
+    ),
+    "wolf_reproduce": UserSettableParameter(
+        "slider",
+        "Wolf reproduction rate",
+        value=0.05,
+        min_value=0,
+        max_value=1,
+        step=0.01,
+    ),
+    "wolf_gain_from_food": UserSettableParameter(
+        "slider", "Wolf gain from food", value=20, min_value=0, max_value=30, step=1
+    ),
+    "grass_regrowth_time": UserSettableParameter(
+        "slider", "Grass regrowth time", value=30, min_value=0, max_value=60, step=1
+    ),
+    "sheep_gain_from_food": UserSettableParameter(
+        "slider", "Sheep gain from food", value=4, min_value=0, max_value=30, step=1
+    ),
 }
 
 server = ModularServer(
