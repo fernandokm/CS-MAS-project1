@@ -51,7 +51,20 @@ class Wolf(RandomWalker):
 
     def step(self):
         self.random_move()
-        # ... to be completed
+        self.energy -= 1
+
+        for agent in self.model.grid.get_cell_list_contents([self.pos]):
+            if isinstance(agent, Sheep):
+                self.energy += self.model.wolf_gain_from_food
+                self.model.kill(agent)
+                break
+
+        if self.energy == 0:
+            self.model.kill(self)
+            return
+
+        if self.random.random() < self.model.wolf_reproduce:
+            self.model.add_wolf(*self.pos)
 
 
 class GrassPatch(Agent):
@@ -68,8 +81,14 @@ class GrassPatch(Agent):
             countdown: Time for the patch of grass to be fully grown again
         """
         super().__init__(unique_id, model)
-        # ... to be completed
+        self.countdown = countdown
+        self.fully_grown = fully_grown
 
     def step(self):
-        pass
-        # ... to be completed
+        if self.fully_grown:
+            return
+        
+        self.countdown -= 1
+        if self.countdown <= 0:
+            self.countdown = self.model.grass_regrowth_time
+            self.fully_grown = True
