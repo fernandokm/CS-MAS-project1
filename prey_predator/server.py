@@ -21,25 +21,26 @@ def wolf_sheep_portrayal(agent):
             "Shape": "circle",
             "Filled": "true",
             "Color": "blue",
-            "r": 0.5,
-            "Layer": 2,
+            "r": 0.3,
+            "Layer": 2
         }
     elif type(agent) is Wolf:
         portrayal = {
-            "Wolf": "circle",
+            "Shape": "circle",
             "Filled": "true",
             "Color": "red",
             "r": 0.5,
-            "Layer": 1,
+            "Layer": 1
         }
 
-    elif type(agent) is GrassPatch:
+    elif type(agent) is GrassPatch and agent.fully_grown:
         portrayal = {
-            "Grass": "square",
+            "Shape": "rect",
             "Filled": "true",
             "Color": "green",
-            "r": 0.3,
-            "Layer": 0,
+            "w" : 0.7,
+            "h" : 0.7,
+            "Layer": 0
         }
 
     return portrayal

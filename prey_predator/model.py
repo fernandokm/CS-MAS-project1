@@ -90,15 +90,19 @@ class WolfSheep(Model):
         )
 
         # Create sheep:
-        for i in range(initial_sheep):
+        for _ in range(initial_sheep):
             self.add_sheep()
 
 
         # Create wolves
-        # ... to be completed
+        for _ in range(initial_wolves):
+            self.add_wolf()
 
         # Create grass patches
-        # ... to be completed
+
+        for i in range(width):
+            for j in range(height):
+                self.add_grass(i, j)
 
     def kill(self, agent):
         self.schedule.remove(agent)
@@ -114,13 +118,22 @@ class WolfSheep(Model):
         self.schedule.add(new_sheep)
 
     def add_wolf(self, x = None, y = None):
-        if x == None or y == None:
+        if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
 
-        new_sheep = Wolf(self.next_id(), self, True, self.sheep_gain_from_food)
-        self.grid.place_agent(new_sheep, (x, y))
-        self.schedule.add(new_sheep)
+        new_wolf = Wolf(self.next_id(), self, True, self.wolf_gain_from_food)
+        self.grid.place_agent(new_wolf, (x, y))
+        self.schedule.add(new_wolf)
+
+    def add_grass(self, x = None, y = None):
+        if x is None or y is None:
+            x = self.random.randrange(self.grid.width)
+            y = self.random.randrange(self.grid.height)
+
+        new_grass = GrassPatch(self.next_id(), self, True, self.grass_regrowth_time)
+        self.grid.place_agent(new_grass, (x, y))
+        self.schedule.add(new_grass)
 
     def step(self):
         self.schedule.step()
