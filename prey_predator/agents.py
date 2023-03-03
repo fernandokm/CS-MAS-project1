@@ -29,13 +29,13 @@ class Sheep(RandomWalker):
                     agent.fully_grown = False
                     self.energy += self.model.sheep_gain_from_food
                     break
-            if self.energy == 0:
+            if self.energy <= 0:
                 self.model.kill(self)
                 return
 
-        if self.random.random() < self.model.sheep_reproduce:
-            print(self.pos)
-            self.model.add_sheep(*self.pos)
+        if self.random.random() < self.model.sheep_reproduce and self.energy > 1:
+            self.model.add_sheep(*self.pos, self.energy // 2)
+            self.energy -= self.energy // 2
 
 
 class Wolf(RandomWalker):
@@ -58,13 +58,13 @@ class Wolf(RandomWalker):
                 self.energy += self.model.wolf_gain_from_food
                 self.model.kill(agent)
                 break
-
-        if self.energy == 0:
+        if self.energy <= 0:
             self.model.kill(self)
             return
 
-        if self.random.random() < self.model.wolf_reproduce:
-            self.model.add_wolf(*self.pos)
+        if self.random.random() < self.model.wolf_reproduce and self.energy > 1:
+            self.model.add_wolf(*self.pos, self.energy // 2)
+            self.energy -= self.energy // 2
 
 
 class GrassPatch(Agent):

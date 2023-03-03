@@ -91,12 +91,12 @@ class WolfSheep(Model):
 
         # Create sheep:
         for _ in range(initial_sheep):
-            self.add_sheep()
+            self.add_sheep(initial_energy=self.sheep_gain_from_food)
 
 
         # Create wolves
         for _ in range(initial_wolves):
-            self.add_wolf()
+            self.add_wolf(initial_energy=self.wolf_gain_from_food)
 
         # Create grass patches
 
@@ -109,20 +109,20 @@ class WolfSheep(Model):
         self.grid.remove_agent(agent)
         
 
-    def add_sheep(self, x = None, y = None):
+    def add_sheep(self, x = None, y = None, initial_energy = 0):
         if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
-        new_sheep = Sheep(self.next_id(), self, True, self.sheep_gain_from_food)
+        new_sheep = Sheep(self.next_id(), self, True, initial_energy)
         self.grid.place_agent(new_sheep, (x, y))
         self.schedule.add(new_sheep)
 
-    def add_wolf(self, x = None, y = None):
+    def add_wolf(self, x = None, y = None, initial_energy = 0):
         if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
 
-        new_wolf = Wolf(self.next_id(), self, True, self.wolf_gain_from_food)
+        new_wolf = Wolf(self.next_id(), self, True, initial_energy)
         self.grid.place_agent(new_wolf, (x, y))
         self.schedule.add(new_wolf)
 
