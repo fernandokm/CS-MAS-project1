@@ -91,7 +91,9 @@ class WolfSheep(Model):
         )
 
         # Create sheep:
-        # ... to be completed
+        for i in range(initial_sheep):
+            self.add_sheep()
+
 
         # Create wolves
         # ... to be completed
@@ -99,15 +101,33 @@ class WolfSheep(Model):
         # Create grass patches
         # ... to be completed
 
+    def add_sheep(self, x = None, y = None):
+        if x == None or y == None:
+            x = self.random.randrange(self.grid.width)
+            y = self.random.randrange(self.grid.height)
+
+        new_sheep = Sheep(self.next_id(), self, True, self.sheep_gain_from_food)
+        self.grid.place_agent(new_sheep)
+        self.schedule.add(new_sheep)
+
+    def add_wolf(self, x = None, y = None):
+        if x == None or y == None:
+            x = self.random.randrange(self.grid.width)
+            y = self.random.randrange(self.grid.height)
+
+        new_sheep = Wolf(self.next_id(), self, True, self.sheep_gain_from_food)
+        self.grid.place_agent(new_sheep)
+        self.schedule.add(new_sheep)
+
     def step(self):
         self.schedule.step()
 
         # Collect data
         self.datacollector.collect(self)
-
         # ... to be completed
 
     def run_model(self, step_count=200):
-
+        for i in range(step_count):
+            self.step()
         # ... to be completed
 
