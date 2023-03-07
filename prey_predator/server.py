@@ -108,7 +108,6 @@ chart_element = ChartModule(
     [
         {"Label": "Wolves", "Color": COLOR_WOLF},
         {"Label": "Sheep", "Color": COLOR_SHEEP},
-        {"Label": "Fully grown grass", "Color": COLOR_GRASS},
     ]
 )
 
