@@ -13,12 +13,23 @@ class Sheep(RandomWalker):
     energy = 0
 
     def __init__(self, unique_id :int, model : Model, moore : bool, energy : int = 0):
+        """
+        unique_id (int) : agent id.
+        model (Model) : environment model. 
+        x (int): The agent's current x coordinate
+        y (int): The agent's current y coordinate
+        moore (bool): If True, may move in all 8 directions.
+                Otherwise, only up, down, left, right.
+        energy : agent's initial energy.
+        """
+
         super().__init__(unique_id, model, moore=moore)
         self.energy = energy
 
     def step(self):
         """
-        A model step. Move, then eat grass and reproduce.
+        Perfom a random move. Then, if the sheep is able to eat and there is any fully grown grass on the position, eat it.
+        Reproduce with a random chance of sheep_reproduce, giving half of its energy to its child.
         """
 
         self.random_move()
@@ -51,6 +62,10 @@ class Wolf(RandomWalker):
         self.energy = energy
 
     def step(self):
+        """
+        Perfom a random move. Then, if there is any sheep on the position, eat it.
+        Reproduce with a random chance of wolf_reproduce, giving half of its energy to its child.
+        """
         self.random_move()
         self.energy -= 1
 
@@ -87,6 +102,9 @@ class GrassPatch(Agent):
         self.fully_grown = fully_grown
 
     def step(self):
+        """
+        Perform a step for the grass. If it is already grown, nothing is done. If not, reduce the countdown by 1 unit. The grass will be grown when the countdown becomes negative.
+        """
         if self.fully_grown:
             return
         
