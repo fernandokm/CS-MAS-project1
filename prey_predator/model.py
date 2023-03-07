@@ -171,13 +171,13 @@ class WolfSheep(Model):
             y = self.random.randrange(self.grid.height)
 
         if fully_grown is None:
-            fully_grown = self.random.randint(0, 1) == 1
+            fully_grown = self.random.randrange(2) == 1
 
         if countdown is None:
-            if(not fully_grown):
-                countdown = self.random.randint(0, self.grass_regrowth_time)
+            if not fully_grown:
+                countdown = self.random.randrange(0, self.grass_regrowth_time)
             else:
-                countdown = 0
+                countdown = self.grass_regrowth_time
 
         new_grass = GrassPatch(self.next_id(), self, fully_grown, countdown)
         self.grid.place_agent(new_grass, (x, y))

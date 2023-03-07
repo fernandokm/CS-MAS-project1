@@ -58,12 +58,9 @@ def wolf_sheep_portrayal(agent):
     return portrayal
 
 
-canvas_element = CanvasGrid(wolf_sheep_portrayal, 20, 20, 500, 500)
-chart_element = ChartModule(
-    [{"Label": "Wolves", "Color": COLOR_WOLF}, {"Label": "Sheep", "Color": COLOR_SHEEP}]
-)
-
 model_params = {
+    "width": 20,
+    "height": 20,
     "grass": UserSettableParameter("checkbox", "Eat grass", value=True),
     "initial_sheep": UserSettableParameter(
         "slider", "Initial sheep", value=100, min_value=0, max_value=400, step=1
@@ -97,6 +94,15 @@ model_params = {
         "slider", "Sheep gain from food", value=4, min_value=0, max_value=30, step=1
     ),
 }
+
+canvas_element = CanvasGrid(wolf_sheep_portrayal, model_params["width"], model_params["height"], 500, 500)
+chart_element = ChartModule(
+    [
+        {"Label": "Wolves", "Color": COLOR_WOLF},
+        {"Label": "Sheep", "Color": COLOR_SHEEP},
+        {"Label": "Fully grown grass", "Color": COLOR_GRASS},
+    ]
+)
 
 server = ModularServer(
     WolfSheep, [canvas_element, chart_element], "Prey Predator Model", model_params
