@@ -12,7 +12,7 @@ Replication of the model found in NetLogo:
 from mesa import Model
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
-
+from mesa import Agent
 from prey_predator.agents import Sheep, Wolf, GrassPatch
 from prey_predator.schedule import RandomActivationByBreed
 
@@ -104,12 +104,12 @@ class WolfSheep(Model):
             for j in range(height):
                 self.add_grass(i, j)
 
-    def kill(self, agent):
+    def kill(self, agent : Agent):
         self.schedule.remove(agent)
         self.grid.remove_agent(agent)
         
 
-    def add_sheep(self, x = None, y = None, initial_energy = 0):
+    def add_sheep(self, x  : int = None, y : int = None, initial_energy :int = 0):
         if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
@@ -117,7 +117,7 @@ class WolfSheep(Model):
         self.grid.place_agent(new_sheep, (x, y))
         self.schedule.add(new_sheep)
 
-    def add_wolf(self, x = None, y = None, initial_energy = 0):
+    def add_wolf(self, x : int = None, y : int = None, initial_energy : int = 0):
         if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
@@ -126,7 +126,7 @@ class WolfSheep(Model):
         self.grid.place_agent(new_wolf, (x, y))
         self.schedule.add(new_wolf)
 
-    def add_grass(self, x = None, y = None):
+    def add_grass(self, x : int = None, y : int = None):
         if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
@@ -142,7 +142,7 @@ class WolfSheep(Model):
         self.datacollector.collect(self)
         # ... to be completed
 
-    def run_model(self, step_count=200):
+    def run_model(self, step_count : int = 200):
         for i in range(step_count):
             self.step()
         # ... to be completed

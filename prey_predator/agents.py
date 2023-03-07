@@ -1,4 +1,5 @@
 from mesa import Agent
+from mesa import Model
 from prey_predator.random_walk import RandomWalker
 
 
@@ -11,7 +12,7 @@ class Sheep(RandomWalker):
 
     energy = 0
 
-    def __init__(self, unique_id, model, moore, energy=0):
+    def __init__(self, unique_id :int, model : Model, moore : bool, energy : int = 0):
         super().__init__(unique_id, model, moore=moore)
         self.energy = energy
 
@@ -45,7 +46,7 @@ class Wolf(RandomWalker):
 
     energy = None
 
-    def __init__(self, unique_id, model, moore, energy=None):
+    def __init__(self, unique_id : int, model : Model, moore : bool, energy : int = 0):
         super().__init__(unique_id, model, moore=moore)
         self.energy = energy
 
@@ -72,7 +73,7 @@ class GrassPatch(Agent):
     A patch of grass that grows at a fixed rate and it is eaten by sheep
     """
 
-    def __init__(self, unique_id, model, fully_grown, countdown):
+    def __init__(self, unique_id : int, model : Model, fully_grown : bool, countdown : int):
         """
         Creates a new patch of grass
 
@@ -81,6 +82,7 @@ class GrassPatch(Agent):
             countdown: Time for the patch of grass to be fully grown again
         """
         super().__init__(unique_id, model)
+
         self.countdown = countdown
         self.fully_grown = fully_grown
 
