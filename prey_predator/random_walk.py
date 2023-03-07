@@ -2,7 +2,7 @@
 Generalized behavior for random walking, one grid cell at a time.
 """
 
-from mesa import Agent
+from mesa import Agent, Model
 
 
 class RandomWalker(Agent):
@@ -14,16 +14,10 @@ class RandomWalker(Agent):
 
     """
 
-    grid = None
-    x = None
-    y = None
-    moore = True
-
-    def __init__(self, unique_id, model, moore=True):
+    def __init__(self, unique_id: int, model: Model, moore=True):
         """
         unique_id (int) : agent id.
-        x (int): The agent's current x coordinate
-        y (int): The agent's current y coordinate
+        model (Model): model in which the agent is placed
         moore (bool): If True, may move in all 8 directions.
                 Otherwise, only up, down, left, right.
         """

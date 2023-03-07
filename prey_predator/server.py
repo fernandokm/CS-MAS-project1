@@ -1,3 +1,4 @@
+from mesa.agent import Agent
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import CanvasGrid, ChartModule
 from mesa.visualization.UserParam import Slider, Checkbox
@@ -11,13 +12,16 @@ COLOR_SHEEP = "#483D8B"
 COLOR_GRASS = "#7FFF00"
 
 
-def wolf_sheep_portrayal(agent):
+def wolf_sheep_portrayal(agent: Agent):
+    """
+    Returns the display settings for each agent.
+    """
     if agent is None:
         return
 
     portrayal = {}
 
-    if type(agent) is Sheep:
+    if isinstance(agent, Sheep):
         portrayal = {
             "Shape": "circle",
             "Filled": "true",
@@ -25,7 +29,7 @@ def wolf_sheep_portrayal(agent):
             "r": 0.3,
             "Layer": 2,
         }
-    elif type(agent) is Wolf:
+    elif isinstance(agent, Wolf):
         portrayal = {
             "Shape": "circle",
             "Filled": "true",
@@ -34,7 +38,7 @@ def wolf_sheep_portrayal(agent):
             "Layer": 1,
         }
 
-    elif type(agent) is GrassPatch:
+    elif isinstance(agent, GrassPatch):
         if agent.fully_grown:
             portrayal = {
                 "Shape": "rect",
@@ -58,6 +62,8 @@ def wolf_sheep_portrayal(agent):
     return portrayal
 
 
+# Create all (user settable and fixed) model parameters
+# We use Checkbox and Slider instead of the deprecated UserSettableParameter.
 model_params = {
     "width": 20,
     "height": 20,
@@ -94,6 +100,7 @@ model_params = {
     ),
 }
 
+# Create the display elements
 canvas_element = CanvasGrid(
     wolf_sheep_portrayal, model_params["width"], model_params["height"], 500, 500
 )
@@ -105,6 +112,7 @@ chart_element = ChartModule(
     ]
 )
 
+# Run the server
 server = ModularServer(
     WolfSheep, [canvas_element, chart_element], "Prey Predator Model", model_params
 )
