@@ -36,7 +36,10 @@ class Sheep(RandomWalker):
         Reproduce with a random chance of sheep_reproduce,
         giving half of its energy to its child.
         """
-
+        # Try to walk, die if there is no energy left (and eating grass is enabled)
+        if self.model.grass and self.energy <= 0:
+            self.model.kill(self)
+            return
         self.random_move()
 
         # If eating grass is enabled, consume 1 energy for the random move
@@ -48,9 +51,6 @@ class Sheep(RandomWalker):
                     agent.fully_grown = False
                     self.energy += self.model.sheep_gain_from_food
                     break
-            if self.energy <= 0:
-                self.model.kill(self)
-                return
 
         # Reproduce randomly and split the energy with the offspring
         if self.random.random() < self.model.sheep_reproduce and self.energy > 1:
@@ -61,10 +61,10 @@ class Sheep(RandomWalker):
 class Wolf(RandomWalker):
     """A wolf that walks around, reproduces (asexually) and eats sheep."""
 
-    model: WolfSheep
-    pos: Coordinate
+    model: "WolfSheep"
+    pos: "Coordinate"
 
-    def __init__(self, unique_id: int, model: WolfSheep, moore: bool, energy: int = 0):
+    def __init__(self, unique_id: int, model: "WolfSheep", moore: bool, energy: int = 0):
         """
         unique_id (int) : agent id.
         model (WolfSheep) : environment model.
@@ -82,7 +82,7 @@ class Wolf(RandomWalker):
         eat one of them. Reproduce with a random chance of wolf_reproduce,
         giving half of its energy to its child.
         """
-        # Move and consume 1 energy
+        # Try to walk, die if there is no energy left
         self.random_move()
         self.energy -= 1
 
@@ -106,11 +106,11 @@ class Wolf(RandomWalker):
 class GrassPatch(Agent):
     """A patch of grass that grows at a fixed rate and it is eaten by sheep."""
 
-    model: WolfSheep
-    pos: Coordinate
+    model: "WolfSheep"
+    pos: "Coordinate"
 
     def __init__(
-        self, unique_id: int, model: WolfSheep, fully_grown: bool, countdown: int
+        self, unique_id: int, model: "WolfSheep", fully_grown: bool, countdown: int
     ):
         """
         grown: (boolean) Whether the patch of grass is fully grown or not
@@ -131,7 +131,8 @@ class GrassPatch(Agent):
         if self.fully_grown:
             return
 
-        self.countdown -= 1
-        if self.countdown <= 0:
+        if self.countdown > 0:
+            self.countdown -= 1
+        else:
             self.countdown = self.model.grass_regrowth_time
             self.fully_grown = True
