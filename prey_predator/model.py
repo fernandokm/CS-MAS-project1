@@ -109,22 +109,31 @@ class WolfSheep(Model):
         self.grid.remove_agent(agent)
         
 
-    def add_sheep(self, x  : int = None, y : int = None, initial_energy :int = 0):
+    def add_sheep(self, x  : int = None, y : int = None, initial_energy :int = None):
         if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
+
+        if(initial_energy is None):
+            initial_energy = self.random.randrange(0, 2*self.sheep_gain_from_food)
+
         new_sheep = Sheep(self.next_id(), self, True, initial_energy)
         self.grid.place_agent(new_sheep, (x, y))
         self.schedule.add(new_sheep)
 
-    def add_wolf(self, x : int = None, y : int = None, initial_energy : int = 0):
+
+    def add_wolf(self, x : int = None, y : int = None, initial_energy : int = None):
         if x is None or y is None:
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
 
+        if(initial_energy is None):
+            initial_energy = self.random.randrange(0, 2*self.wolf_gain_from_food)
+        
         new_wolf = Wolf(self.next_id(), self, True, initial_energy)
         self.grid.place_agent(new_wolf, (x, y))
         self.schedule.add(new_wolf)
+
 
     def add_grass(self, x : int = None, y : int = None):
         if x is None or y is None:
@@ -137,7 +146,7 @@ class WolfSheep(Model):
             countdown = self.random.randint(0, self.grass_regrowth_time)
         else:
             countdown = 0
-            
+
         new_grass = GrassPatch(self.next_id(), self, fully_grown, countdown)
         self.grid.place_agent(new_grass, (x, y))
         self.schedule.add(new_grass)
