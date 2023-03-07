@@ -62,6 +62,7 @@ model_params = {
     "width": 20,
     "height": 20,
     "grass": Checkbox("Eat grass", value=True),
+    "moore": Checkbox("Moore", value=True),
     "initial_sheep": Slider(
         "Initial sheep", value=100, min_value=0, max_value=400, step=1
     ),
