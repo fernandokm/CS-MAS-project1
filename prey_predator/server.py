@@ -1,6 +1,6 @@
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import CanvasGrid, ChartModule
-from mesa.visualization.UserParam import UserSettableParameter
+from mesa.visualization.UserParam import Slider, Checkbox
 
 from prey_predator.agents import Wolf, Sheep, GrassPatch
 from prey_predator.model import WolfSheep
@@ -61,41 +61,41 @@ def wolf_sheep_portrayal(agent):
 model_params = {
     "width": 20,
     "height": 20,
-    "grass": UserSettableParameter("checkbox", "Eat grass", value=True),
-    "initial_sheep": UserSettableParameter(
-        "slider", "Initial sheep", value=100, min_value=0, max_value=400, step=1
+    "grass": Checkbox("Eat grass", value=True),
+    "initial_sheep": Slider(
+        "Initial sheep", value=100, min_value=0, max_value=400, step=1
     ),
-    "initial_wolves": UserSettableParameter(
-        "slider", "Initial wolves", value=50, min_value=0, max_value=400, step=1
+    "initial_wolves": Slider(
+        "Initial wolves", value=50, min_value=0, max_value=400, step=1
     ),
-    "sheep_reproduce": UserSettableParameter(
-        "slider",
+    "sheep_reproduce": Slider(
         "Sheep reproduction rate",
         value=0.04,
         min_value=0,
         max_value=1,
-        step=0.01,
+        step=0.01,  # type: ignore
     ),
-    "wolf_reproduce": UserSettableParameter(
-        "slider",
+    "wolf_reproduce": Slider(
         "Wolf reproduction rate",
         value=0.05,
         min_value=0,
         max_value=1,
-        step=0.01,
+        step=0.01,  # type: ignore
     ),
-    "wolf_gain_from_food": UserSettableParameter(
-        "slider", "Wolf gain from food", value=20, min_value=0, max_value=30, step=1
+    "wolf_gain_from_food": Slider(
+        "Wolf gain from food", value=20, min_value=0, max_value=30, step=1
     ),
-    "grass_regrowth_time": UserSettableParameter(
-        "slider", "Grass regrowth time", value=30, min_value=0, max_value=60, step=1
+    "grass_regrowth_time": Slider(
+        "Grass regrowth time", value=30, min_value=0, max_value=60, step=1
     ),
-    "sheep_gain_from_food": UserSettableParameter(
-        "slider", "Sheep gain from food", value=4, min_value=0, max_value=30, step=1
+    "sheep_gain_from_food": Slider(
+        "Sheep gain from food", value=4, min_value=0, max_value=30, step=1
     ),
 }
 
-canvas_element = CanvasGrid(wolf_sheep_portrayal, model_params["width"], model_params["height"], 500, 500)
+canvas_element = CanvasGrid(
+    wolf_sheep_portrayal, model_params["width"], model_params["height"], 500, 500
+)
 chart_element = ChartModule(
     [
         {"Label": "Wolves", "Color": COLOR_WOLF},
