@@ -37,7 +37,7 @@ def run_model_until_collapse(timeout: int, lb : int = 0, up : int = 400, **model
     return step + 1 + std
 
 
-def objective(trial: optuna.Trial, trial_ranges, timeout : int = 200_000, samples : int = 3) -> float:
+def objective(trial: optuna.Trial, trial_ranges, timeout : int = 100_000, samples : int = 3) -> float:
     """
     Objective function to be optimized. Takes a trial and simulate it with suggested parameters. Run the simulation 'samples' times and return the mean.
 
@@ -68,47 +68,3 @@ def objective(trial: optuna.Trial, trial_ranges, timeout : int = 200_000, sample
     for _ in range(samples):
         times.append(run_model_until_collapse(timeout=timeout, **params))
     return sum(times) / len(times)
-
-
-def main():
-    initial_params = {
-        "height": 20,
-        "width": 20,
-        "initial_sheep": 54,
-        "initial_wolves": 22,
-        "sheep_reproduce": 0.1,
-        "wolf_reproduce": 0.05,
-        "wolf_gain_from_food": 20,
-        "grass": True,
-        "grass_regrowth_time": 15,
-        "sheep_gain_from_food": 4,
-        "moore": True,
-    }
-
-    trial_ranges = {
-        "height": 20,
-        "width": 20,
-        "initial_sheep": [0, 400],
-        "initial_wolves": [0, 400],
-        "sheep_reproduce": [0, 1],
-        "wolf_reproduce": [0, 1],
-        "wolf_gain_from_food": [1, 50],
-        "grass_regrowth_time": [1, 50],
-        "sheep_gain_from_food": [1, 50],
-        "grass": [False, True],
-        "moore": [False, True],
-    }
-
-    study = optuna.create_study(
-        direction="maximize",
-        sampler=optuna.samplers.TPESampler(multivariate=True),
-        pruner=optuna.pruners.HyperbandPruner(),
-    )
-    study.enqueue_trial(initial_params)
-    study.optimize(lambda trial : objective(trial, trial_ranges), n_trials=600, n_jobs=-1)
-
-    print(study.best_params)
-
-
-if __name__ == "__main__":
-    main()
