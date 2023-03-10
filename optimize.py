@@ -24,7 +24,7 @@ def run_model_until_collapse(timeout: int, **model_kwargs):
     std = 0
     if step > 0:
         std = df["Wolves"].std(ddof=1) + df["Sheep"].std(ddof=1)
-    return step + std
+    return step + 1 + std
 
 
 def objective(trial: optuna.Trial, timeout=100_000) -> float:
